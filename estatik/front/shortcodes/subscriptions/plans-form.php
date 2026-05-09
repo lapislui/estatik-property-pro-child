@@ -114,7 +114,7 @@
 	                                if ( $url = es_get_page_url( 'login' ) ) {
 		                                $url = add_query_arg( array(
 			                                'redirect_url' => rawurlencode( $checkout_url ),
-			                                'auth_item'    => 'agent-register-form',
+			                                'auth_item'    => 'login-form',
 		                                ), $url );
                                     } else {
                                         $url = '#es-authentication-popup';
@@ -156,7 +156,7 @@
                                     if ( $url = es_get_page_url( 'login' ) ) {
                                         $url = add_query_arg( array(
 	                                        'redirect_url' => rawurlencode( $checkout_url ),
-                                            'auth_item'    => 'agent-register-form',
+                                            'auth_item'    => 'login-form',
                                         ), $url );
                                     } else {
                                         $url = '#es-authentication-popup';

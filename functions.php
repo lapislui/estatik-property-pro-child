@@ -330,6 +330,74 @@ function estatik_property_pro_child_get_active_auth_networks_by_context( $args, 
 	return $active_networks;
 }
 
+function estatik_property_pro_child_normalize_redirect_url( $redirect_url ) {
+	if ( ! is_string( $redirect_url ) || '' === $redirect_url ) {
+		return '';
+	}
+
+	$redirect_url = trim( wp_unslash( $redirect_url ) );
+
+	for ( $i = 0; $i < 3; $i++ ) {
+		$decoded_redirect_url = rawurldecode( $redirect_url );
+
+		if ( $decoded_redirect_url === $redirect_url ) {
+			break;
+		}
+
+		$redirect_url = $decoded_redirect_url;
+	}
+
+	return wp_validate_redirect( $redirect_url, '' );
+}
+
+function estatik_property_pro_child_get_requested_redirect_url() {
+	$redirect_url = filter_input( INPUT_POST, 'redirect_url', FILTER_UNSAFE_RAW );
+
+	if ( ! $redirect_url ) {
+		$redirect_url = filter_input( INPUT_GET, 'redirect_url', FILTER_UNSAFE_RAW );
+	}
+
+	return estatik_property_pro_child_normalize_redirect_url( $redirect_url );
+}
+
+function estatik_property_pro_child_filter_success_auth_redirect_url( $url ) {
+	$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+
+	return $redirect_url ? $redirect_url : $url;
+}
+add_filter( 'es_get_success_auth_redirect_url', 'estatik_property_pro_child_filter_success_auth_redirect_url', 20 );
+
+function estatik_property_pro_child_preserve_auth_redirect_url( $location, $status ) {
+	if ( empty( $location ) || 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
+		return $location;
+	}
+
+	$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+
+	if ( ! $redirect_url || false === strpos( $location, 'auth_item=login-form' ) ) {
+		return $location;
+	}
+
+	$login_page_url = function_exists( 'es_get_page_url' ) ? es_get_page_url( 'login' ) : '';
+
+	if ( $login_page_url && 0 !== strpos( $location, $login_page_url ) ) {
+		return $location;
+	}
+
+	$query = wp_parse_url( $location, PHP_URL_QUERY );
+
+	if ( is_string( $query ) ) {
+		parse_str( $query, $query_args );
+
+		if ( ! empty( $query_args['redirect_url'] ) ) {
+			return $location;
+		}
+	}
+
+	return add_query_arg( 'redirect_url', rawurlencode( $redirect_url ), $location );
+}
+add_filter( 'wp_redirect', 'estatik_property_pro_child_preserve_auth_redirect_url', 20, 2 );
+
 function estatik_property_pro_child_render_estatik_login_form( $args = array(), $is_visible = true, $show_back_link = false, $extra_classes = array() ) {
 	$classes = array_merge(
 		array(
@@ -363,10 +431,12 @@ function estatik_property_pro_child_render_estatik_login_form( $args = array(), 
 
 		<form action="" method="POST">
 			<?php
-			if ( ! empty( $_GET['redirect_url'] ) ) {
+			$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+
+			if ( $redirect_url ) {
 				es_framework_field_render( 'redirect_url', array(
 					'type'  => 'hidden',
-					'value' => sanitize_text_field( wp_unslash( $_GET['redirect_url'] ) ),
+					'value' => $redirect_url,
 					'attributes' => array(
 						'id' => sprintf( '%s-%s', 'redirect_url', uniqid() ),
 					),
@@ -474,7 +544,7 @@ function estatik_property_pro_child_render_estatik_buyer_register_form( $args = 
 			<?php
 			es_framework_field_render( 'redirect_url', array(
 				'type'       => 'hidden',
-				'value'      => filter_input( INPUT_GET, 'redirect_url' ),
+				'value'      => estatik_property_pro_child_get_requested_redirect_url(),
 				'attributes' => array(
 					'id' => sprintf( '%s-%s', 'redirect_url', uniqid() ),
 				),
