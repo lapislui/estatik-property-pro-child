@@ -347,46 +347,63 @@ body.era-payment-modal-open {
 	}
 }
 
-/* Child-theme override for Estatik shortcode login view. */
+/* Child-theme override for Estatik authentication flows. */
 body .es-auth {
-	max-width: 700px;
+	--era-auth-border: #cfdced;
+	--era-auth-border-strong: #a8bfdc;
+	--era-auth-surface: #ffffff;
+	--era-auth-surface-soft: #ffffff;
+	--era-auth-text: #1f2635;
+	--era-auth-muted: #5a6578;
+	--era-auth-link: #0468e7;
+	--era-auth-link-hover: #0353b9;
+	--era-auth-primary: #0470f3;
+	--era-auth-primary-hover: #035ed0;
+	--era-auth-shadow: none;
+	max-width: 980px;
 	margin: 0 auto;
+	display: grid;
+	gap: 22px;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form,
-body .es-auth .es-auth__item.es-auth__buyer-register-form,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form {
+body .es-auth .es-auth__item {
+	position: relative;
 	max-width: 100%;
-	padding: 24px;
-	border: 1px solid #d9e2ec;
-	border-radius: 6px;
+	padding: 28px 26px 24px;
+	border: 1px solid var(--era-auth-border);
+	border-radius: 8px;
 	background: #ffffff;
-	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+	box-shadow: var(--era-auth-shadow);
 }
 
-body .es-auth .es-auth__item.es-auth__login-form h3,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form h3,
-body .es-auth .es-auth__item.es-auth__buyer-register-form h3,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form h3 {
-	margin: 0 0 20px;
-	font-size: 18px;
-	line-height: 1.35;
-	font-weight: 700;
-	color: #2f3a4a;
+body .es-auth .es-auth__item.es-auth__item--hidden {
+	display: none;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form p,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form p,
-body .es-auth .es-auth__item.es-auth__buyer-register-form p,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form p {
-	margin: 0 0 16px;
+body .es-auth .es-auth__item h3 {
+	margin: 0 0 18px;
+	color: var(--era-auth-text);
+	font-size: 32px;
+	line-height: 1.1;
+	font-weight: 800;
+	letter-spacing: -0.02em;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form form,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form form,
-body .es-auth .es-auth__item.es-auth__buyer-register-form form,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form form {
+body .es-auth .es-auth__item > p,
+body .es-auth .es-auth__item .sign-in-text,
+body .es-auth .es-auth__item .es-field__description,
+body .es-auth .es-auth__item .description {
+	color: var(--era-auth-muted);
+	font-size: 15px;
+	line-height: 1.65;
+}
+
+body .es-auth .es-auth__item > p {
+	margin: 0 0 18px;
+	max-width: 38rem;
+}
+
+body .es-auth .es-auth__item form {
 	margin: 0;
 	padding: 0;
 	background: transparent;
@@ -394,189 +411,315 @@ body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form form {
 	box-shadow: none;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-field:not(.es-field__terms_conditions),
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-field:not(.es-field__terms_conditions),
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field:not(.es-field__terms_conditions),
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field:not(.es-field__terms_conditions) {
+body .es-auth .es-auth__item .es-field:not(.es-field__terms_conditions) {
 	width: 100%;
 	max-width: none;
-	margin: 0 0 22px;
+	margin: 0 0 20px;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-field__label,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-field__label,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field__label,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field__label,
-body .es-auth .es-auth__item.es-auth__login-form label,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form label,
-body .es-auth .es-auth__item.es-auth__buyer-register-form label,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form label {
+body .es-auth .es-auth__item label,
+body .es-auth .es-auth__item .es-field__label {
 	display: block;
 	margin: 0 0 10px;
+	color: var(--era-auth-text);
 	font-size: 15px;
-	line-height: 1.35;
+	line-height: 1.4;
 	font-weight: 700;
-	color: #3f4957;
+	letter-spacing: 0.01em;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-field__es_user_password,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-field__es_user_password,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field__es_user_password,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field__es_user_password {
+body .es-auth .es-auth__item .es-field__description {
+	display: block;
+	margin-top: 9px;
+}
+
+body .es-auth .es-auth__item input[type="text"],
+body .es-auth .es-auth__item input[type="email"],
+body .es-auth .es-auth__item input[type="password"],
+body .es-auth .es-auth__item input[type="tel"],
+body .es-auth .es-auth__item input[type="search"],
+body .es-auth .es-auth__item select,
+body .es-auth .es-auth__item textarea {
+	width: 100%;
+	min-height: 58px;
+	padding: 14px 18px;
+	border: 1px solid var(--era-auth-border);
+	border-radius: 4px;
+	background: var(--era-auth-surface-soft);
+	box-shadow: none;
+	color: var(--era-auth-text);
+	font-size: 15px;
+	line-height: 1.45;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+body .es-auth .es-auth__item input::placeholder,
+body .es-auth .es-auth__item textarea::placeholder {
+	color: #8a97ab;
+}
+
+body .es-auth .es-auth__item input:focus,
+body .es-auth .es-auth__item select:focus,
+body .es-auth .es-auth__item textarea:focus,
+body .es-auth .es-auth__item .select2-container--default.select2-container--focus .select2-selection--single {
+	border-color: var(--era-auth-primary);
+	background: var(--era-auth-surface);
+	box-shadow: 0 0 0 1px var(--era-auth-primary);
+	outline: none;
+}
+
+body .es-auth .es-auth__item .es-field__es_user_password,
+body .es-auth .es-auth__item .es-field__es_new_password {
 	padding: 0;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form input[type="text"],
-body .es-auth .es-auth__item.es-auth__login-form input[type="email"],
-body .es-auth .es-auth__item.es-auth__login-form input[type="password"],
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="text"],
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="email"],
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="password"],
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="text"],
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="email"],
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="password"],
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="text"],
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="email"],
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="password"] {
-	width: 100%;
-	min-height: 48px;
-	padding: 10px 14px;
-	border: 1px solid #bcc8d6;
-	border-radius: 2px;
-	background: #ffffff;
-	box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
-	font-size: 15px;
-	color: #1f2937;
+body .es-auth .es-auth__item .es-input__wrap {
+	position: relative;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form input[type="text"]:focus,
-body .es-auth .es-auth__item.es-auth__login-form input[type="email"]:focus,
-body .es-auth .es-auth__item.es-auth__login-form input[type="password"]:focus,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="text"]:focus,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="email"]:focus,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form input[type="password"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="text"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="email"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-form input[type="password"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="text"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="email"]:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form input[type="password"]:focus {
-	border-color: #91a4bb;
-	box-shadow: 0 0 0 2px rgba(17, 89, 175, 0.08);
-	outline: none;
+body .es-auth .es-auth__item .es-field__es_user_password .es-icon,
+body .es-auth .es-auth__item .es-field__es_new_password .es-icon {
+	color: #7a88a0;
+}
+
+body .es-auth .es-auth__item .es-field--phone > label {
+	display: grid;
+	grid-template-columns: minmax(132px, 0.9fr) minmax(0, 1.1fr);
+	gap: 14px;
+	align-items: start;
+}
+
+body .es-auth .es-auth__item .es-field--phone > label > .es-field__label,
+body .es-auth .es-auth__item .es-field--phone > label > .es-field__description {
+	grid-column: 1 / -1;
+}
+
+body .es-auth .es-auth__item .es-field--phone > label .es-field__code,
+body .es-auth .es-auth__item .es-field--phone > label .es-field__input {
+	margin: 0;
+}
+
+body .es-auth .es-auth__item .select2-container .select2-selection--single {
+	min-height: 58px;
+	border: 1px solid var(--era-auth-border);
+	border-radius: 4px;
+	background: var(--era-auth-surface-soft);
+}
+
+body .es-auth .es-auth__item .select2-container--default .select2-selection--single .select2-selection__rendered {
+	padding-left: 18px;
+	padding-right: 42px;
+	color: var(--era-auth-text);
+	line-height: 56px;
+}
+
+body .es-auth .es-auth__item .select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 56px;
+	right: 10px;
 }
 
 body .es-auth .es-auth__actions-row {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 14px;
-	margin-top: 4px;
+	margin-top: 8px;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-btn.es-btn--login,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-btn.es-btn--login,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-btn.es-btn--signup,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-btn.es-btn--signup {
-	margin: 0;
-	min-width: 104px;
-	min-height: 44px;
-	padding: 10px 20px;
-	border-radius: 3px;
-	background: #1e73be;
+body .es-auth .es-auth__item .es-btn,
+body .es-auth .es-auth__item button[type="submit"],
+body .es-auth .es-auth__item input[type="submit"] {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 48px;
+	padding: 10px 24px;
+	border: 0;
+	border-radius: 4px;
+	background: var(--era-auth-primary);
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: 600;
+	line-height: 1;
+	text-decoration: none;
+	box-shadow: none;
+	transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-btn.es-btn--login:hover,
-body .es-auth .es-auth__item.es-auth__login-form .es-btn.es-btn--login:focus,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-btn.es-btn--login:hover,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-btn.es-btn--login:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-btn.es-btn--signup:hover,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-btn.es-btn--signup:focus,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-btn.es-btn--signup:hover,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-btn.es-btn--signup:focus {
-	background: #135ea5;
+body .es-auth .es-auth__item .es-btn:hover,
+body .es-auth .es-auth__item .es-btn:focus,
+body .es-auth .es-auth__item button[type="submit"]:hover,
+body .es-auth .es-auth__item button[type="submit"]:focus,
+body .es-auth .es-auth__item input[type="submit"]:hover,
+body .es-auth .es-auth__item input[type="submit"]:focus {
+	background: var(--era-auth-primary-hover);
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .es-btn.es-btn--login[disabled],
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .es-btn.es-btn--login[disabled],
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-btn.es-btn--signup[disabled],
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-btn.es-btn--signup[disabled] {
-	opacity: 0.72;
+body .es-auth .es-auth__item .es-btn[disabled],
+body .es-auth .es-auth__item button[type="submit"][disabled],
+body .es-auth .es-auth__item input[type="submit"][disabled] {
+	opacity: 0.62;
 	cursor: not-allowed;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .forgot-pwd,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .forgot-pwd {
+body .es-auth .es-auth__item .es-btn--auth,
+body .es-auth .es-auth__item .es-btn--secondary.es-btn--bordered {
 	width: 100%;
-	max-width: none;
-	margin: 14px 0 0;
-	text-align: left;
+	justify-content: flex-start;
+	margin: 0 0 12px;
+	padding: 14px 18px;
+	border: 1px solid var(--era-auth-border);
+	background: var(--era-auth-surface);
+	color: var(--era-auth-text);
+	box-shadow: none;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .forgot-pwd a,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .forgot-pwd a,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field__description a,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field__description a,
-body .es-auth .es-auth__item.es-auth__login-form .sign-in-text a,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .sign-in-text a,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .sign-in-text a,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .sign-in-text a {
-	color: #1e73be;
+body .es-auth .es-auth__item .es-btn--auth:hover,
+body .es-auth .es-auth__item .es-btn--auth:focus,
+body .es-auth .es-auth__item .es-btn--secondary.es-btn--bordered:hover,
+body .es-auth .es-auth__item .es-btn--secondary.es-btn--bordered:focus {
+	border-color: var(--era-auth-primary);
+	background: rgba(4, 112, 243, 0.04);
+	color: var(--era-auth-primary);
+}
+
+body .es-auth .es-auth__item .es-btn--auth .es-icon {
+	font-size: 18px;
+	color: var(--era-auth-primary);
+}
+
+body .es-auth .es-auth__item .forgot-pwd,
+body .es-auth .es-auth__item .login-back,
+body .es-auth .es-auth__item .sign-in-text {
+	margin-top: 16px;
+}
+
+body .es-auth .es-auth__item .forgot-pwd {
+	width: 100%;
+}
+
+body .es-auth .es-auth__item a,
+body .es-auth .es-auth__item .forgot-pwd a,
+body .es-auth .es-auth__item .sign-in-text a,
+body .es-auth .es-auth__item .login-back,
+body .es-auth .es-auth__item .es-field__description a {
+	color: var(--era-auth-link);
 	text-decoration: underline;
+	text-underline-offset: 2px;
+	font-weight: 500;
 }
 
-body .es-auth .es-auth__item.es-auth__login-form .sign-in-text,
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .sign-in-text,
-body .es-auth .es-auth__item.es-auth__buyer-register-form .sign-in-text,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .sign-in-text {
-	margin-top: 18px;
+body .es-auth .es-auth__item a:hover,
+body .es-auth .es-auth__item a:focus {
+	color: var(--era-auth-link-hover);
 }
 
-body .es-auth .es-auth__item.es-auth__login-buttons--inline-form .all-login-back {
-	display: none;
+body .es-auth .es-auth__item .all-login-back {
+	margin: 0 0 18px;
 }
 
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .all-login-back {
-	display: none;
-}
-
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field__description,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field__description {
-	display: block;
-	margin-top: 8px;
-	color: #5d6878;
+body .es-auth .es-auth__item .all-login-back a,
+body .es-auth .es-auth__item .login-back {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--era-auth-muted);
 	font-size: 14px;
-	line-height: 1.5;
+	font-weight: 600;
 }
 
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-field__validate-list--compact,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-field__validate-list--compact {
+body .es-auth .es-auth__item .all-login-back a:hover,
+body .es-auth .es-auth__item .login-back:hover {
+	color: var(--era-auth-primary);
+}
+
+body .es-auth .es-auth__item .es-field__validate-list,
+body .es-auth .es-auth__item .es-field__validate-list--compact {
 	display: none;
 }
 
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-privacy-policy-container,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-privacy-policy-container {
+body .es-auth .es-auth__item .es-privacy-policy-container {
 	max-width: none;
 	margin: 18px 0 0;
-	justify-content: flex-start;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
 	text-align: left;
-	color: #384354;
-	font-size: 14px;
+	color: #3f495b;
+	font-size: 15px;
 	line-height: 1.75;
 }
 
-body .es-auth .es-auth__item.es-auth__buyer-register-form .es-privacy-policy-container .es-field,
-body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form .es-privacy-policy-container .es-field {
+body .es-auth .es-auth__item .es-privacy-policy-container .es-field {
 	margin: 0;
 }
 
+body .es-auth .es-auth__item input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	border-radius: 5px;
+	border-color: var(--era-auth-border-strong);
+}
+
+body .es-auth .es-auth-footer {
+	margin-top: -4px;
+	padding: 22px 24px;
+	border: 1px solid var(--era-auth-border);
+	border-radius: 8px;
+	background: #ffffff;
+}
+
+body .es-auth .es-auth-footer__inner {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 18px;
+}
+
+body .es-auth .es-auth-footer__left {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+body .es-auth .es-auth-footer__left .es-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background: rgba(19, 103, 209, 0.12);
+	color: var(--era-auth-primary);
+	font-size: 22px;
+}
+
+body .es-auth .es-auth-footer__content b {
+	display: block;
+	margin-bottom: 4px;
+	color: var(--era-auth-text);
+	font-size: 16px;
+}
+
+body .es-auth .es-auth-footer__content p {
+	margin: 0;
+	color: var(--era-auth-muted);
+}
+
 @media (max-width: 767px) {
-	body .es-auth .es-auth__item.es-auth__login-form,
-	body .es-auth .es-auth__item.es-auth__login-buttons--inline-form,
-	body .es-auth .es-auth__item.es-auth__buyer-register-form,
-	body .es-auth .es-auth__item.es-auth__buyer-register-buttons--inline-form {
+	body .es-auth .es-auth__item {
+		padding: 22px 18px 20px;
+		border-radius: 8px;
+	}
+
+	body .es-auth .es-auth__item .es-field--phone > label {
+		grid-template-columns: 1fr;
+	}
+
+	body .es-auth .es-auth-footer {
 		padding: 18px;
 	}
 }
