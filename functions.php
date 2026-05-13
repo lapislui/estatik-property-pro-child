@@ -625,6 +625,180 @@ function estatik_property_pro_child_render_estatik_buyer_register_form( $args = 
 	<?php
 }
 
+function estatik_property_pro_child_is_subscription_checkout_redirect_url( $redirect_url ) {
+	if ( ! $redirect_url || ! is_string( $redirect_url ) ) {
+		return false;
+	}
+
+	$query = wp_parse_url( $redirect_url, PHP_URL_QUERY );
+
+	if ( ! is_string( $query ) || '' === $query ) {
+		return false;
+	}
+
+	parse_str( $query, $query_args );
+
+	return ! empty( $query_args['screen'] ) && 'checkout' === $query_args['screen'] && ! empty( $query_args['plan'] );
+}
+
+function estatik_property_pro_child_should_render_agent_checkout_auth_forms( $args = array() ) {
+	if ( is_user_logged_in() || empty( $args['enable_agents_register'] ) ) {
+		return false;
+	}
+
+	$auth_item = ! empty( $args['auth_item'] ) ? sanitize_key( $args['auth_item'] ) : sanitize_key( (string) filter_input( INPUT_GET, 'auth_item' ) );
+
+	if ( ! in_array( $auth_item, array( 'agent-register-form', 'login-form' ), true ) ) {
+		return false;
+	}
+
+	return estatik_property_pro_child_is_subscription_checkout_redirect_url( estatik_property_pro_child_get_requested_redirect_url() );
+}
+
+function estatik_property_pro_child_render_estatik_agent_register_form( $args = array(), $is_visible = true, $show_back_link = true, $extra_classes = array(), $show_login_link = true ) {
+	$classes = array_merge(
+		array(
+			'es-auth__item',
+			'es-auth__agent-register-form',
+		),
+		(array) $extra_classes
+	);
+
+	if ( ! $is_visible ) {
+		$classes[] = 'es-auth__item--hidden';
+	}
+	?>
+	<div class="<?php echo esc_attr( implode( ' ', array_filter( $classes ) ) ); ?>">
+		<?php if ( ! empty( $args['agent_register_title'] ) ) : ?>
+			<h3 class="heading-font"><?php echo esc_html( $args['agent_register_title'] ); ?></h3>
+		<?php else : ?>
+			<h3 class="heading-font"><?php esc_html_e( 'Register', 'es' ); ?></h3>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $args['agent_register_subtitle'] ) ) : ?>
+			<p><?php echo wp_kses_post( $args['agent_register_subtitle'] ); ?></p>
+		<?php endif; ?>
+
+		<?php if ( $show_back_link ) : ?>
+			<div class="all-login-back">
+				<a href="#" class="js-es-auth-item__switcher" data-auth-item="agent-register-buttons">
+					<span class="es-icon es-icon_chevron-left"></span><?php esc_html_e( 'All sign up options', 'es' ); ?>
+				</a>
+			</div>
+		<?php endif; ?>
+
+		<form action="" method="POST">
+			<?php
+			$uniqid = uniqid();
+			?>
+			<input type="hidden" name="uniqid" value="<?php echo esc_attr( $uniqid ); ?>"/>
+			<?php wp_nonce_field( 'es_register', 'es_register_nonce_' . $uniqid ); ?>
+			<?php
+			es_framework_field_render( 'redirect_url', array(
+				'type'       => 'hidden',
+				'value'      => estatik_property_pro_child_get_requested_redirect_url(),
+				'attributes' => array(
+					'id' => sprintf( '%s-%s', 'redirect_url', uniqid() ),
+				),
+			) );
+
+			es_framework_field_render( 'es_type', array(
+				'type'       => 'hidden',
+				'value'      => 'agent',
+				'attributes' => array(
+					'id' => sprintf( '%s-%s', 'es_type', uniqid() ),
+				),
+			) );
+
+			if ( ! empty( $args['is_popup'] ) ) {
+				es_framework_field_render( 'is_popup', array(
+					'type'       => 'hidden',
+					'value'      => 1,
+					'attributes' => array(
+						'id' => sprintf( '%s-%s', 'is_popup', uniqid() ),
+					),
+				) );
+			}
+
+			es_framework_field_render( 'es_extra_info', array(
+				'type'       => 'text',
+				'value'      => '',
+				'attributes' => array(
+					'id' => sprintf( '%s-%s', 'es_extra_info', uniqid() ),
+				),
+			) );
+
+			es_framework_field_render( 'es_user_email', array(
+				'type'        => 'email',
+				'label'       => _x( 'Email address', 'authenticate form', 'es' ),
+				'attributes'  => array(
+					'required'     => 'required',
+					'autocomplete' => 'username',
+					'id'           => sprintf( '%s-%s', 'es_user_email', uniqid() ),
+				),
+				'description' => __( 'Email address will be verified in the next step.', 'es' ),
+			) );
+
+			es_framework_field_render( 'es_user_password', array(
+				'label'       => _x( 'Password', 'authenticate form', 'es' ),
+				'type'        => 'password',
+				'attributes'  => array(
+					'required'     => 'required',
+					'minlength'    => '8',
+					'autocomplete' => 'new-password',
+					'class'        => 'js-es-password-field',
+					'id'           => sprintf( '%s-%s', 'es_user_password', uniqid() ),
+				),
+				'skeleton'    => "{before}
+					<div class='es-field es-field__{field_key} es-field--{type} {wrapper_class}'>
+						<label for='{id}'>{label}{caption}</label>
+						<div class='es-input__wrap'>{input}</div>
+						{description}
+					</div>
+				{after}",
+				'description' => "<ul class='es-field__validate-list es-field__validate-list--compact'>
+					<li class='es-validate-item es-validate-item__contain'>" . esc_html__( 'Can\'t contain the name or email address', 'es' ) . "</li>
+					<li class='es-validate-item es-validate-item__length'>" . esc_html__( 'At least 8 characters', 'es' ) . "</li>
+					<li class='es-validate-item es-validate-item__char'>" . esc_html__( 'Contains a number or symbol', 'es' ) . "</li>
+				</ul>",
+			) );
+
+			es_framework_field_render( 'es_phone', array(
+				'label'                    => __( 'Phone', 'es' ),
+				'type'                     => 'phone',
+				'is_country_code_disabled' => ests( 'is_tel_code_disabled' ),
+				'codes'                    => es_esc_json_attr( es_get_phone_data( 'dial_code' ) ),
+				'icons'                    => es_esc_json_attr( es_get_phone_data( 'icon' ) ),
+				'code_config'              => array(
+					'options'    => es_get_phone_data( 'country' ),
+					'attributes' => array(
+						'id' => 'es-field-code-' . uniqid(),
+					),
+				),
+				'tel_config'               => array(
+					'attributes' => array(
+						'pattern' => '+?[0-9]+',
+						'id'      => 'es-field-tel-' . uniqid(),
+					),
+				),
+				'description'              => __( 'We\'ll use it to contact you.', 'es' ),
+			) );
+			?>
+
+			<?php do_action( 'es_recaptcha', 'sign_up_form' ); ?>
+			<div class="es-auth__actions-row">
+				<button type="submit" disabled class="es-btn es-btn--primary es-btn--signup"><?php esc_html_e( 'Register', 'es' ); ?></button>
+			</div>
+			<?php do_action( 'es_privacy_policy', 'sign_up_form' ); ?>
+			<?php if ( $show_login_link ) : ?>
+				<p class="sign-in-text"><?php _e( 'Already have an account? <a href="#" class="js-es-auth-item__switcher" data-auth-item="login-buttons">Log in</a>', 'es' ); ?></p>
+			<?php endif; ?>
+		</form>
+		<div class="es-space"></div>
+	</div>
+	<?php
+}
+
 function estatik_property_pro_child_render_era_profile_modal() {
 	$plugin = estatik_property_pro_child_get_era_plugin();
 

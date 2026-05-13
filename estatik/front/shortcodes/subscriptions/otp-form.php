@@ -128,8 +128,8 @@
             <?php else : ?>
                 <?php if ( $url = es_get_page_url( 'login' ) ) : ?>
                     <a href="<?php echo add_query_arg( array(
-	                    'redirect_url', rawurlencode( es_get_current_url() ),
-	                    'auth_item' => 'agent-register-form',
+	                    'redirect_url' => rawurlencode( es_get_current_url() ),
+	                    'auth_item'    => 'agent-register-form',
                     ), $url ); ?>" class="es-btn es-btn--primary es-btn--buy"><?php _e( 'Sign up as agent', 'es' ); ?></a>
                 <?php else : ?>
                     <a href="#es-authentication-popup" class="es-btn es-btn--primary es-btn--buy js-es-popup-link"><?php _e( 'Sign up as agent', 'es' ); ?></a>

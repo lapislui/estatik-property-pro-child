@@ -114,7 +114,7 @@
 	                                if ( $url = es_get_page_url( 'login' ) ) {
 		                                $url = add_query_arg( array(
 			                                'redirect_url' => rawurlencode( $checkout_url ),
-			                                'auth_item'    => 'login-form',
+			                                'auth_item'    => 'agent-register-form',
 		                                ), $url );
                                     } else {
                                         $url = '#es-authentication-popup';
@@ -125,7 +125,7 @@
 	                                <?php if ( get_current_user_id() && current_user_can( 'agent' ) ) : ?>
 		                                <?php echo $plan->is_free_trial_enabled ? __( $plan->start_trial_button ) : __( $plan->main_button ); ?>
 	                                <?php else : ?>
-		                                <?php _e( 'Sign up as agent', 'es' ); ?>
+		                                <?php _e( 'Signup/Signin as agent', 'es' ); ?>
 	                                <?php endif; ?>
                                 </a>
                             <?php endif; ?>
@@ -156,7 +156,7 @@
                                     if ( $url = es_get_page_url( 'login' ) ) {
                                         $url = add_query_arg( array(
 	                                        'redirect_url' => rawurlencode( $checkout_url ),
-                                            'auth_item'    => 'login-form',
+                                            'auth_item'    => 'agent-register-form',
                                         ), $url );
                                     } else {
                                         $url = '#es-authentication-popup';
@@ -167,7 +167,7 @@
                                     <?php if ( get_current_user_id() && current_user_can( 'agent' ) ) : ?>
 	                                    <?php echo $plan->is_free_trial_enabled ? __( $plan->start_trial_button ) : __( $plan->main_button ); ?>
                                     <?php else : ?>
-                                        <?php _e( 'Sign up as agent', 'es' ); ?>
+                                        <?php _e( 'Signup/Signin as agent', 'es' ); ?>
                                     <?php endif; ?>
                                 </a>
                             <?php endif; ?>
