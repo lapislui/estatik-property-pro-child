@@ -357,8 +357,8 @@ body .es-auth {
 	--era-auth-muted: #5a6578;
 	--era-auth-link: #0468e7;
 	--era-auth-link-hover: #0353b9;
-	--era-auth-primary: #0470f3;
-	--era-auth-primary-hover: #035ed0;
+	--era-auth-primary: #006be7;
+	--era-auth-primary-hover: #006be7;
 	--era-auth-shadow: none;
 	max-width: 980px;
 	margin: 0 auto;
@@ -538,7 +538,7 @@ body .es-auth .es-auth__item input[type="submit"] {
 	border: 0;
 	border-radius: 4px;
 	background: var(--era-auth-primary);
-	color: #ffffff;
+	color: #ffffff; 
 	font-size: 15px;
 	font-weight: 600;
 	line-height: 1;
@@ -561,6 +561,23 @@ body .es-auth .es-auth__item button[type="submit"][disabled],
 body .es-auth .es-auth__item input[type="submit"][disabled] {
 	opacity: 0.62;
 	cursor: not-allowed;
+}
+
+body .es-auth .es-btn.es-btn--login,
+body .es-auth .es-btn.es-btn--login:hover,
+body .es-auth .es-btn.es-btn--login:focus,
+body .es-auth .es-btn.es-btn--login[disabled],
+body .es-auth .es-btn.es-btn--login[disabled]:hover,
+body .es-auth .es-btn.es-btn--signup,
+body .es-auth .es-btn.es-btn--signup:hover,
+body .es-auth .es-btn.es-btn--signup:focus,
+body .es-auth .es-btn.es-btn--signup[disabled],
+body .es-auth .es-btn.es-btn--signup[disabled]:hover,
+body .es-auth button.es-btn--primary.es-btn--login,
+body .es-auth button.es-btn--primary.es-btn--signup {
+	background: #006ae6 !important;
+	border-color: #006ae6 !important;
+	color: #ffffff !important;
 }
 
 body .es-auth .es-auth__item .es-btn--auth,
