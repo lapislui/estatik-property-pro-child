@@ -655,6 +655,101 @@ function estatik_property_pro_child_should_render_agent_checkout_auth_forms( $ar
 	return estatik_property_pro_child_is_subscription_checkout_redirect_url( estatik_property_pro_child_get_requested_redirect_url() );
 }
 
+function estatik_property_pro_child_is_agent_checkout_registration_request() {
+	if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ) ) {
+		return false;
+	}
+
+	$es_type = sanitize_key( (string) filter_input( INPUT_POST, 'es_type' ) );
+
+	if ( 'agent' !== $es_type ) {
+		return false;
+	}
+
+	return estatik_property_pro_child_is_subscription_checkout_redirect_url( estatik_property_pro_child_get_requested_redirect_url() );
+}
+
+function estatik_property_pro_child_store_agent_checkout_redirect_url( $user_id ) {
+	if ( ! estatik_property_pro_child_is_agent_checkout_registration_request() ) {
+		return;
+	}
+
+	$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+
+	if ( ! $redirect_url ) {
+		return;
+	}
+
+	update_user_meta( absint( $user_id ), 'es_agent_checkout_redirect_url', esc_url_raw( $redirect_url ) );
+}
+add_action( 'register_new_user', 'estatik_property_pro_child_store_agent_checkout_redirect_url', 50 );
+
+function estatik_property_pro_child_append_agent_checkout_redirect_to_confirmation_link( $link, $email_instance ) {
+	if ( ! estatik_property_pro_child_is_agent_checkout_registration_request() || empty( $link ) ) {
+		return $link;
+	}
+
+	$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+
+	if ( ! $redirect_url ) {
+		return $link;
+	}
+
+	if ( ! preg_match( "/href='([^']+)'/", $link, $matches ) ) {
+		return $link;
+	}
+
+	$confirmation_url = add_query_arg( 'redirect_url', rawurlencode( $redirect_url ), $matches[1] );
+	$escaped_url = esc_url( $confirmation_url );
+
+	return str_replace( $matches[1], $escaped_url, $link );
+}
+add_filter( 'es_agent_confirmation_link', 'estatik_property_pro_child_append_agent_checkout_redirect_to_confirmation_link', 10, 2 );
+
+function estatik_property_pro_child_redirect_approved_agent_to_checkout( $location, $status ) {
+	$action = sanitize_key( (string) filter_input( INPUT_GET, 'auth-action' ) );
+	$email  = sanitize_email( (string) filter_input( INPUT_GET, 'user_email' ) );
+
+	if ( 'approve-user' !== $action || ! $email ) {
+		return $location;
+	}
+
+	$login_page_url = function_exists( 'es_get_page_url' ) ? es_get_page_url( 'login' ) : '';
+
+	if ( $login_page_url && 0 === strpos( $location, $login_page_url ) ) {
+		$redirect_url = estatik_property_pro_child_get_requested_redirect_url();
+		$user = get_user_by( 'email', $email );
+
+		if ( ! $redirect_url && $user instanceof WP_User ) {
+			$redirect_url = get_user_meta( $user->ID, 'es_agent_checkout_redirect_url', true );
+		}
+
+		if ( ! $redirect_url || ! $user instanceof WP_User ) {
+			return $location;
+		}
+
+		$user_instance = function_exists( 'es_get_user_entity' ) ? es_get_user_entity( $user->ID ) : null;
+
+		if ( ! $user_instance || ! method_exists( $user_instance, 'is_active' ) || ! $user_instance->is_active() ) {
+			return $location;
+		}
+
+		if ( method_exists( $user_instance, 'is_pending_approval' ) && $user_instance->is_pending_approval() ) {
+			return $location;
+		}
+
+		wp_set_current_user( $user->ID );
+		wp_set_auth_cookie( $user->ID, true, is_ssl() );
+		do_action( 'wp_login', $user->user_login, $user );
+		delete_user_meta( $user->ID, 'es_agent_checkout_redirect_url' );
+
+		return add_query_arg( 'redirect_action', 'sign-up', $redirect_url );
+	}
+
+	return $location;
+}
+add_filter( 'wp_redirect', 'estatik_property_pro_child_redirect_approved_agent_to_checkout', 30, 2 );
+
 function estatik_property_pro_child_render_estatik_agent_register_form( $args = array(), $is_visible = true, $show_back_link = true, $extra_classes = array(), $show_login_link = true ) {
 	$classes = array_merge(
 		array(

@@ -386,11 +386,22 @@ body .es-auth.es-auth--agent-checkout-flow {
 	align-items: start;
 }
 
+body .es-auth.es-auth--agent-checkout-flow .es-notify-list,
 body .es-auth.es-auth--agent-checkout-flow .es-message,
 body .es-auth.es-auth--agent-checkout-flow .es-notify,
 body .es-auth.es-auth--agent-checkout-flow .es-authentication__message,
 body .es-auth.es-auth--agent-checkout-flow .notice {
 	grid-column: 1 / -1;
+}
+
+body .es-auth.es-auth--agent-checkout-flow .es-notify-list {
+	margin: 0 0 22px;
+	padding: 0;
+	list-style: none;
+}
+
+body .es-auth.es-auth--agent-checkout-flow .es-notify-list .es-notify {
+	margin: 0;
 }
 
 body .es-auth .es-auth__item h3 {

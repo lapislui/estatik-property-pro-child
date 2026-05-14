@@ -18,14 +18,20 @@ $is_agent_checkout_auth = estatik_property_pro_child_should_render_agent_checkou
 				$login_args,
 				true,
 				false,
-				array( 'es-auth__item--agent-checkout-login' )
+				array(
+					'es-auth__item--agent-checkout-login',
+					'es-auth__agent-checkout-auth',
+				)
 			);
 
 			estatik_property_pro_child_render_estatik_agent_register_form(
 				$args,
 				true,
 				false,
-				array( 'es-auth__item--agent-checkout-register' ),
+				array(
+					'es-auth__item--agent-checkout-register',
+					'es-auth__agent-checkout-auth',
+				),
 				false
 			);
 

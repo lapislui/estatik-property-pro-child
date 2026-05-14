@@ -1,5 +1,5 @@
 <?php /** @var $args array */ ?>
-<?php $back_auth_item = estatik_property_pro_child_should_render_agent_checkout_auth_forms( $args ) ? 'login-form' : 'login-buttons'; ?>
+<?php $back_auth_item = estatik_property_pro_child_should_render_agent_checkout_auth_forms( $args ) ? 'agent-checkout-auth' : 'login-buttons'; ?>
 <div class="es-auth__item es-auth__reset-form <?php echo ! isset( $args['auth_item'] ) || 'reset-form' !== $args['auth_item'] ? 'es-auth__item--hidden' : ''; ?>">
 	<h3 class="heading-font"><?php esc_html_e( 'Reset password', 'es' ); ?></h3>
 	<p><?php esc_html_e( 'Enter your email address and we will send you a link to change your password.', 'es' ); ?></p>
