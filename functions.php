@@ -128,6 +128,56 @@ function estatik_property_pro_child_era_asset_url( $relative_path ) {
 	return trailingslashit( get_stylesheet_directory_uri() ) . ltrim( $relative_path, '/' );
 }
 
+function estatik_property_pro_child_normalize_menu_item_label( $label ) {
+	$label = wp_strip_all_tags( (string) $label );
+	$label = strtolower( trim( preg_replace( '/\s+/', ' ', $label ) ) );
+
+	return $label;
+}
+
+function estatik_property_pro_child_customize_logged_in_header_menu( $items, $args ) {
+	if ( is_admin() || ! is_user_logged_in() || empty( $items ) || ! is_array( $items ) ) {
+		return $items;
+	}
+
+	$current_user = wp_get_current_user();
+	$username     = $current_user instanceof WP_User && $current_user->exists() ? $current_user->display_name : '';
+
+	if ( ! $username && $current_user instanceof WP_User && $current_user->exists() ) {
+		$username = $current_user->user_login;
+	}
+
+	foreach ( $items as $item ) {
+		if ( ! $item instanceof WP_Post ) {
+			continue;
+		}
+
+		$normalized_label = estatik_property_pro_child_normalize_menu_item_label( $item->title );
+
+		if ( 'tenant log in' === $normalized_label || 'tenant login' === $normalized_label ) {
+			$item->title      = __( "You're logged in", 'estatik-property-pro-child' );
+			$item->url        = admin_url();
+			$item->attr_title = __( 'Open dashboard', 'estatik-property-pro-child' );
+			$item->target     = '';
+			$item->xfn        = '';
+			$item->classes    = array_merge( (array) $item->classes, array( 'menu-item--logged-in-status' ) );
+			continue;
+		}
+
+		if ( 'agent / agency log in' === $normalized_label || 'agent / agency login' === $normalized_label ) {
+			$item->title      = sprintf( __( 'Hi, %s', 'estatik-property-pro-child' ), $username ? $username : __( 'user', 'estatik-property-pro-child' ) );
+			$item->url        = admin_url();
+			$item->attr_title = __( 'Open dashboard', 'estatik-property-pro-child' );
+			$item->target     = '';
+			$item->xfn        = '';
+			$item->classes    = array_merge( (array) $item->classes, array( 'menu-item--logged-in-greeting' ) );
+		}
+	}
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'estatik_property_pro_child_customize_logged_in_header_menu', 20, 2 );
+
 function estatik_property_pro_child_get_era_key_id() {
 	if ( function_exists( 'era_razorpayment_addon' ) ) {
 		$plugin = era_razorpayment_addon();
