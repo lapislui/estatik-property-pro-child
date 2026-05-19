@@ -381,10 +381,13 @@ body .es-auth .es-auth__item.es-auth__item--hidden {
 }
 
 body .es-auth.es-auth--agent-checkout-flow {
-	max-width: 1360px;
+	width: calc(100vw - 48px);
+	max-width: 1680px;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 20px;
 	align-items: stretch;
+	margin-left: calc(50% - 50vw + 24px);
+	margin-right: calc(50% - 50vw + 24px);
 }
 
 body .es-auth.es-auth--agent-checkout-flow > * {
@@ -416,6 +419,12 @@ body .es-auth.es-auth--agent-checkout-flow .es-auth__item {
 	border-color: #d8e3f2;
 	box-shadow: 0 10px 24px rgba(16, 43, 84, 0.05);
 	overflow: visible;
+}
+
+body .es-auth.es-auth--agent-checkout-flow .es-auth__item,
+body .es-auth.es-auth--agent-checkout-flow .es-auth__item form {
+	width: 100%;
+	max-width: none;
 }
 
 body .es-auth.es-auth--agent-checkout-flow .es-auth__item h3 {
@@ -947,8 +956,12 @@ body .es-auth .es-auth-footer__content p {
 
 @media (max-width: 767px) {
 	body .es-auth.es-auth--agent-checkout-flow {
+		width: 100%;
+		max-width: none;
 		grid-template-columns: 1fr;
 		gap: 20px;
+		margin-left: 0;
+		margin-right: 0;
 	}
 
 	body .es-auth .es-auth__item {
