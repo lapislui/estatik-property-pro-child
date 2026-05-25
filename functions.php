@@ -156,8 +156,8 @@ function estatik_property_pro_child_customize_logged_in_header_menu( $items, $ar
 
 		if ( 'tenant log in' === $normalized_label || 'tenant login' === $normalized_label ) {
 			$item->title      = __( "You're logged in", 'estatik-property-pro-child' );
-			$item->url        = admin_url();
-			$item->attr_title = __( 'Open dashboard', 'estatik-property-pro-child' );
+			$item->url        = wp_logout_url( home_url( '/' ) );
+			$item->attr_title = __( 'Log out', 'estatik-property-pro-child' );
 			$item->target     = '';
 			$item->xfn        = '';
 			$item->classes    = array_merge( (array) $item->classes, array( 'menu-item--logged-in-status' ) );
