@@ -155,7 +155,7 @@ function estatik_property_pro_child_customize_logged_in_header_menu( $items, $ar
 		$normalized_label = estatik_property_pro_child_normalize_menu_item_label( $item->title );
 
 		if ( 'tenant log in' === $normalized_label || 'tenant login' === $normalized_label ) {
-			$item->title      = __( "You're logged in", 'estatik-property-pro-child' );
+			$item->title      = __( "Logout", 'estatik-property-pro-child' );
 			$item->url        = wp_logout_url( home_url( '/' ) );
 			$item->attr_title = __( 'Log out', 'estatik-property-pro-child' );
 			$item->target     = '';

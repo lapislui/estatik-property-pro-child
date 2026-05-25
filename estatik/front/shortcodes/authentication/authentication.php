@@ -5,6 +5,10 @@
 
 $flashes = es_get_flash_instance( 'authenticate' );
 $is_agent_checkout_auth = estatik_property_pro_child_should_render_agent_checkout_auth_forms( $args );
+
+if ( ! $is_agent_checkout_auth && is_page( 'agent-registeration' ) && empty( $args['auth_item'] ) ) {
+	$args['auth_item'] = 'agent-register-form';
+}
 ?>
 <div class="es-auth js-es-auth content-font<?php echo $is_agent_checkout_auth ? ' es-auth--agent-checkout-flow' : ''; ?>">
 	<?php if ( ! is_user_logged_in() ) : ?>
