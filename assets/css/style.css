@@ -394,3 +394,61 @@ body .es-auth ol {
 		height: 46px;
 	}
 }
+
+/* =========================================================
+   ESTATIK PROFILE / LISTING PAGE WRAPPER
+========================================================= */
+/* 
+body.era-estatik-profile-listing-page .entry-hero-container-inner,
+body.era-estatik-profile-listing-page .hero-section-overlay,
+body.era-estatik-profile-listing-page .entry-header,
+body.era-estatik-profile-listing-page .archive-title,
+body.era-estatik-profile-listing-page .page-header,
+body.era-estatik-profile-listing-page .entry-hero {
+	padding-top: 50px !important;
+	padding-bottom: 50px !important;
+} */
+
+body.era-estatik-profile-listing-page .entry-title,
+body.era-estatik-profile-listing-page .page-title,
+body.era-estatik-profile-listing-page .archive-title h1,
+body.era-estatik-profile-listing-page .wp-block-post-title {
+	margin: 0 !important;
+	text-align: center;
+	font-size: 32px;
+	font-weight: 800;
+	line-height: 1.1;
+	color: #000000;
+}
+
+body.era-estatik-profile-listing-page .content-container,
+body.era-estatik-profile-listing-page .entry-content-wrap,
+body.era-estatik-profile-listing-page .site-container,
+body.era-estatik-profile-listing-page .content-wrap {
+	max-width: 100% !important;
+	width: 100% !important;
+}
+
+body.era-estatik-profile-listing-page .site-main,
+body.era-estatik-profile-listing-page .entry-content {
+	padding-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+	body.era-estatik-profile-listing-page .entry-hero-container-inner,
+	body.era-estatik-profile-listing-page .hero-section-overlay,
+	body.era-estatik-profile-listing-page .entry-header,
+	body.era-estatik-profile-listing-page .archive-title,
+	body.era-estatik-profile-listing-page .page-header,
+	body.era-estatik-profile-listing-page .entry-hero {
+		padding-top: 20px !important;
+		padding-bottom: 20px !important;
+	}
+
+	body.era-estatik-profile-listing-page .entry-title,
+	body.era-estatik-profile-listing-page .page-title,
+	body.era-estatik-profile-listing-page .archive-title h1,
+	body.era-estatik-profile-listing-page .wp-block-post-title {
+		font-size: 28px;
+	}
+}

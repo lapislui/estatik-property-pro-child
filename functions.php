@@ -321,16 +321,48 @@ function estatik_property_pro_child_has_shortcode_in_content( $shortcode_tag ) {
 	return has_shortcode( $post->post_content, $shortcode_tag );
 }
 
+function estatik_property_pro_child_has_any_shortcode_in_content( $shortcode_tags ) {
+	foreach ( (array) $shortcode_tags as $shortcode_tag ) {
+		if ( estatik_property_pro_child_has_shortcode_in_content( $shortcode_tag ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function estatik_property_pro_child_is_estatik_profile_listing_page() {
+	return estatik_property_pro_child_has_any_shortcode_in_content( array(
+		'es_profile',
+		'es_my_listing',
+		'es_my_listings',
+		'es_profile_listings',
+		'es_properties_management',
+	) );
+}
+
 function estatik_property_pro_child_enqueue_auth_assets() {
 	if ( is_admin() || ! wp_style_is( 'era-razorpay-style', 'registered' ) ) {
 		return;
 	}
 
-	if ( estatik_property_pro_child_has_shortcode_in_content( 'es_authentication' ) ) {
+	if (
+		estatik_property_pro_child_has_shortcode_in_content( 'es_authentication' ) ||
+		estatik_property_pro_child_is_estatik_profile_listing_page()
+	) {
 		wp_enqueue_style( 'era-razorpay-style' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'estatik_property_pro_child_enqueue_auth_assets', 25 );
+
+function estatik_property_pro_child_add_profile_listing_body_class( $classes ) {
+	if ( estatik_property_pro_child_is_estatik_profile_listing_page() ) {
+		$classes[] = 'era-estatik-profile-listing-page';
+	}
+
+	return $classes;
+}
+add_filter( 'body_class', 'estatik_property_pro_child_add_profile_listing_body_class' );
 
 function estatik_property_pro_child_get_active_auth_networks( $args ) {
 	$active_networks = array();
